@@ -47,13 +47,13 @@ const Toolbar = ({
         </button>
         <button onClick={onSave} className="toolbar-btn" title="Save (Ctrl+S)">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-            <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 2-2H14V2a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V1z"/>
+            <path d="M8.5 1.5A1.5 1.5 0 0 1 10 0h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h6c-.314.418-.5.937-.5 1.5v7.793L4.854 6.646a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0l3.5-3.5a.5.5 0 0 0-.708-.708L8.5 9.293V1.5z"/>
           </svg>
           Save
         </button>
         <button onClick={onSaveAs} className="toolbar-btn" title="Save As">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-            <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v4.5h2a.5.5 0 0 1 .354.854l-2.5 2.5a.5.5 0 0 1-.708 0l-2.5-2.5A.5.5 0 0 1 5.5 6.5h2V2a2 2 0 0 2-2H14V2a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V1z"/>
+            <path d="M11 .5a.5.5 0 0 0-.5-.5h-7a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5v-3zm-8.5 7a.5.5 0 0 0-.5.5v5.5a.5.5 0 0 0 .5.5h10a.5.5 0 0 0 .5-.5V8a.5.5 0 0 0-.5-.5h-10zM0 4.5v9A1.5 1.5 0 0 0 1.5 15h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 3h-13A1.5 1.5 0 0 0 0 4.5z"/>
           </svg>
           Save As
         </button>

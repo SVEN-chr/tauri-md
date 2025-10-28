@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useMemo } from 'react';
 import MarkdownIt from 'markdown-it';
 import taskLists from 'markdown-it-task-lists';
 import hljs from 'highlight.js';
@@ -10,13 +10,24 @@ interface MarkdownPreviewProps {
   onChange: (content: string) => void;
 }
 
+// HTML escape function to avoid circular dependency
+const escapeHtml = (str: string): string => {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+};
+
 const MarkdownPreview = ({ content, onChange }: MarkdownPreviewProps) => {
   const editorRef = useRef<HTMLDivElement>(null);
   const isUpdatingRef = useRef(false);
 
   // Initialize markdown-it with syntax highlighting and task lists
-  const md = useRef(
-    new MarkdownIt({
+  // Use useMemo to ensure stable instance across re-renders
+  const md = useMemo(
+    () => new MarkdownIt({
       html: true,
       linkify: true,
       typographer: true,
@@ -26,10 +37,12 @@ const MarkdownPreview = ({ content, onChange }: MarkdownPreviewProps) => {
             return `<pre class="hljs"><code>${hljs.highlight(str, { language: lang, ignoreIllegals: true }).value}</code></pre>`;
           } catch (__) {}
         }
-        return `<pre class="hljs"><code>${md.current.utils.escapeHtml(str)}</code></pre>`;
+        // Use standalone escapeHtml function instead of md.current.utils
+        return `<pre class="hljs"><code>${escapeHtml(str)}</code></pre>`;
       }
-    }).use(taskLists, { enabled: true, label: true, labelAfter: true })
-  ).current;
+    }).use(taskLists, { enabled: true, label: true, labelAfter: true }),
+    []
+  );
 
   // Update preview when content changes
   useEffect(() => {
