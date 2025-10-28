@@ -122,6 +122,16 @@ The application is structured with clear separation of concerns:
 - Update `markdown-it` configuration in `MarkdownPreview.tsx` for rendering options
 - Adjust CodeMirror settings in `SourceEditor.tsx` for editor behavior
 
+### TypeScript Type Definitions
+The project includes custom type declarations for packages without official TypeScript support:
+- **src/markdown-it-task-lists.d.ts**: Type definitions for the markdown-it-task-lists plugin
+
+## Bug Fixes & Documentation
+
+- **BUGFIX-WHITE-SCREEN.md**: Fix for white screen crash when switching modes
+- **BUGFIX-TYPESCRIPT-BUILD.md**: Fix for TypeScript compilation errors in production builds
+- **FIXES.md**: Documentation of task list and scrolling fixes
+
 ## Recommended IDE Setup
 
 - [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
