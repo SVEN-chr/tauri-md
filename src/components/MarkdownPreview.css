@@ -101,6 +101,29 @@
   margin-bottom: 8px;
 }
 
+/* Task Lists */
+.markdown-preview .task-list-item {
+  list-style-type: none;
+  margin-left: -1.5em;
+}
+
+.markdown-preview .task-list-item-checkbox {
+  margin-right: 0.5em;
+  margin-left: 0;
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+}
+
+.markdown-preview .task-list-item-checkbox:disabled {
+  cursor: default;
+}
+
+.markdown-preview .task-list-item .task-list-item-checkbox + label {
+  margin-left: 0.3em;
+}
+
 /* Code */
 .markdown-preview code {
   padding: 0.2em 0.4em;

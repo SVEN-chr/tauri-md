@@ -1,8 +1,9 @@
 .source-editor {
   flex: 1;
-  overflow: hidden;
+  overflow: auto;
   display: flex;
   flex-direction: column;
+  min-height: 0;
 }
 
 .source-editor .cm-editor {
@@ -13,10 +14,13 @@
 .source-editor .cm-scroller {
   font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
   line-height: 1.6;
+  overflow-y: auto !important;
+  overflow-x: auto !important;
 }
 
 .source-editor .cm-content {
   padding: 20px 0;
+  min-height: 100%;
 }
 
 .source-editor .cm-line {

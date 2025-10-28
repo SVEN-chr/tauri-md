@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import MarkdownIt from 'markdown-it';
+import taskLists from 'markdown-it-task-lists';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/github-dark.css';
 import './MarkdownPreview.css';
@@ -13,7 +14,7 @@ const MarkdownPreview = ({ content, onChange }: MarkdownPreviewProps) => {
   const editorRef = useRef<HTMLDivElement>(null);
   const isUpdatingRef = useRef(false);
 
-  // Initialize markdown-it with syntax highlighting
+  // Initialize markdown-it with syntax highlighting and task lists
   const md = useRef(
     new MarkdownIt({
       html: true,
@@ -27,7 +28,7 @@ const MarkdownPreview = ({ content, onChange }: MarkdownPreviewProps) => {
         }
         return `<pre class="hljs"><code>${md.current.utils.escapeHtml(str)}</code></pre>`;
       }
-    })
+    }).use(taskLists, { enabled: true, label: true, labelAfter: true })
   ).current;
 
   // Update preview when content changes
@@ -105,6 +106,18 @@ const MarkdownPreview = ({ content, onChange }: MarkdownPreviewProps) => {
             return children + '\n';
           case 'li':
             const parent = el.parentElement;
+
+            // Check if this is a task list item
+            const checkbox = el.querySelector('input[type="checkbox"].task-list-item-checkbox');
+            if (checkbox) {
+              const isChecked = (checkbox as HTMLInputElement).checked;
+              const taskMarker = isChecked ? '[x]' : '[ ]';
+              // Remove the checkbox and label from children text
+              const label = el.querySelector('label');
+              const taskText = label ? label.textContent || '' : children;
+              return `- ${taskMarker} ${taskText.trim()}\n`;
+            }
+
             if (parent?.tagName.toLowerCase() === 'ol') {
               const index = Array.from(parent.children).indexOf(el) + 1;
               return `${index}. ${children}\n`;

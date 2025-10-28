@@ -18,6 +18,7 @@ A beautiful, minimal Markdown editor built with Tauri, React, and TypeScript. In
 - Headings (H1-H6)
 - **Bold** and *italic* text
 - Lists (ordered and unordered)
+- **Task Lists** with checkboxes (GitHub Flavored Markdown)
 - Links and images
 - Code blocks with language-specific syntax highlighting
 - Tables

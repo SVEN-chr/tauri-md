@@ -14,9 +14,11 @@ const SourceEditor = ({ content, onChange }: SourceEditorProps) => {
       <CodeMirror
         value={content}
         height="100%"
+        maxHeight="100%"
         extensions={[markdown()]}
         theme={oneDark}
         onChange={onChange}
+        style={{ height: '100%', overflow: 'auto' }}
         basicSetup={{
           lineNumbers: true,
           highlightActiveLineGutter: true,

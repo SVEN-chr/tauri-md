@@ -9,7 +9,7 @@ import './MarkdownEditor.css';
 export type ViewMode = 'preview' | 'source';
 
 const MarkdownEditor = () => {
-  const [content, setContent] = useState('# Welcome to Markdown Editor\n\nStart typing to see the live preview...\n\n## Features\n\n- **Bold** and *italic* text\n- Lists and checkboxes\n- Code blocks with syntax highlighting\n- Tables\n- And much more!\n\n```javascript\nconst hello = "world";\nconsole.log(hello);\n```\n');
+  const [content, setContent] = useState('# Welcome to Markdown Editor\n\nStart typing to see the live preview...\n\n## Features\n\n- **Bold** and *italic* text\n- Lists and checkboxes\n- Code blocks with syntax highlighting\n- Tables\n- And much more!\n\n## Task Lists\n\n- [x] Write the press release\n- [ ] Update the website\n- [ ] Contact the media\n\n## Code Example\n\n```javascript\nconst hello = "world";\nconsole.log(hello);\n```\n');
   const [currentFile, setCurrentFile] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>('preview');
   const [isDirty, setIsDirty] = useState(false);

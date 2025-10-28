@@ -77,6 +77,14 @@
 2. Ordered list item 2
 ```
 
+### Task Lists (GitHub Flavored Markdown)
+```markdown
+- [ ] Unchecked task
+- [x] Checked task
+- [ ] Another unchecked task
+  - [x] Nested checked task
+```
+
 ### Links and Images
 ```markdown
 [Link text](https://example.com)
