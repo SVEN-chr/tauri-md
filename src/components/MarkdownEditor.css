@@ -1,0 +1,23 @@
+.markdown-editor {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #ffffff;
+  color: #333;
+}
+
+.editor-container {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .markdown-editor {
+    background-color: #1e1e1e;
+    color: #d4d4d4;
+  }
+}
+
