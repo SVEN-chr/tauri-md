@@ -1,0 +1,33 @@
+/* 编辑器主容器 */
+.markdown-editor-with-toolbar {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: #ffffff;
+}
+
+/* 编辑器内容区域 */
+.markdown-editor-with-toolbar .markdown-editor-container {
+  flex: 1;
+  overflow-y: auto;
+  background: #ffffff;
+}
+
+/* 滚动条样式 */
+.markdown-editor-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.markdown-editor-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.markdown-editor-container::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+.markdown-editor-container::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+

@@ -1,0 +1,78 @@
+/* 工具栏容器 */
+.editor-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+  align-items: center;
+}
+
+/* 工具栏分组 */
+.toolbar-group {
+  display: flex;
+  gap: 0.25rem;
+  padding: 0 0.5rem;
+  border-right: 1px solid #e5e7eb;
+}
+
+.toolbar-group:last-child {
+  border-right: none;
+}
+
+/* 工具栏按钮 */
+.toolbar-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2rem;
+  height: 2rem;
+  padding: 0 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.toolbar-button:hover:not(:disabled) {
+  background: #e5e7eb;
+  color: #1f2937;
+}
+
+.toolbar-button:active:not(:disabled) {
+  background: #d1d5db;
+}
+
+.toolbar-button.is-active {
+  background: #3b82f6;
+  color: white;
+  border-color: #2563eb;
+}
+
+.toolbar-button.is-active:hover {
+  background: #2563eb;
+}
+
+.toolbar-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* 按钮内的图标/文字样式 */
+.toolbar-button strong,
+.toolbar-button em,
+.toolbar-button s {
+  font-style: normal;
+  font-weight: 600;
+}
+
+.toolbar-button em {
+  font-style: italic;
+}
+
