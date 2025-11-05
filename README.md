@@ -1,7 +1,172 @@
-# Tauri + React + Typescript
+# Tauri Markdown 编辑器
 
-This template should help get you started developing with Tauri, React and Typescript in Vite.
+一个基于 Tauri + React + TypeScript 构建的现代化 Markdown 编辑器，提供所见即所得的编辑体验。
 
-## Recommended IDE Setup
+## ✨ 功能特性
 
-- [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+- 📝 **所见即所得编辑** - 基于 TipTap 3.x 的实时 Markdown 渲染
+- 🎨 **语法高亮** - 支持 30+ 编程语言的代码高亮
+- 🧮 **数学公式** - 支持 LaTeX 数学公式渲染（KaTeX）
+- ✅ **任务列表** - 可交互的复选框任务列表
+- 📊 **表格支持** - 可调整大小的表格
+- 🎯 **丰富的工具栏** - 快速格式化文本
+- 💾 **文件操作** - 新建、打开、保存、导出 HTML
+- 🖥️ **跨平台** - Web 版本和桌面应用
+
+## 🚀 快速开始
+
+### 安装依赖
+
+```bash
+npm install
+```
+
+### 开发模式
+
+**Web 版本（推荐）：**
+```bash
+npm run dev
+```
+访问 http://localhost:1420/
+
+**Tauri 桌面版：**
+```bash
+npm run tauri dev
+```
+
+### 构建生产版本
+
+**Web 版本：**
+```bash
+npm run build
+```
+
+**Tauri 桌面应用：**
+```bash
+npm run tauri build
+```
+
+## 📖 使用指南
+
+### 工具栏功能
+
+#### 文本格式化
+- **B** - 加粗文本 (Ctrl+B)
+- **I** - 斜体文本 (Ctrl+I)
+- **S** - 删除线
+- **</>** - 行内代码
+
+#### 标题
+- **H1/H2/H3** - 插入标题
+
+#### 列表
+- **• List** - 无序列表
+- **1. List** - 有序列表
+- **☑ Task** - 任务列表
+
+#### 其他
+- **" Quote** - 引用块
+- **{ }** - 代码块
+- **―** - 水平分隔线
+- **⊞ Table** - 插入表格
+- **↶/↷** - 撤销/重做
+
+### 代码块语法高亮
+
+使用三个反引号 + 语言名称：
+
+\`\`\`javascript
+function hello() {
+  console.log("Hello, World!");
+}
+\`\`\`
+
+支持的语言：JavaScript, TypeScript, Python, Java, C/C++, Go, Rust, PHP, Ruby, Swift, Kotlin, Bash, SQL, JSON, YAML, HTML, CSS 等。
+
+### 数学公式
+
+**行内公式：**
+```
+质能方程：$E = mc^2$
+```
+
+**块级公式：**
+```
+$$
+\int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi}
+$$
+```
+
+### 任务列表
+
+```markdown
+- [x] 已完成的任务
+- [ ] 待办任务
+```
+
+点击复选框可以切换完成状态！
+
+### 表格
+
+```markdown
+| 列1 | 列2 | 列3 |
+|-----|-----|-----|
+| 数据1 | 数据2 | 数据3 |
+```
+
+## 🛠️ 技术栈
+
+| 技术 | 版本 | 用途 |
+|------|------|------|
+| React | 19.x | 前端框架 |
+| TypeScript | 5.8.x | 类型安全 |
+| TipTap | 3.10.x | 编辑器引擎 |
+| Lowlight | 3.3.x | 代码高亮 |
+| KaTeX | 0.16.x | 数学公式渲染 |
+| Zustand | 5.0.x | 状态管理 |
+| Vite | 7.x | 构建工具 |
+| Tauri | 2.x | 桌面应用框架 |
+| Tailwind CSS | 4.x | CSS 框架 |
+
+## 📁 项目结构
+
+```
+tauri-md/
+├── src/
+│   ├── components/
+│   │   ├── Editor/              # 编辑器组件
+│   │   ├── Toolbar/             # 工具栏组件
+│   │   ├── MenuBar/             # 菜单栏组件
+│   │   └── MarkdownEditorWithToolbar.tsx
+│   ├── store/
+│   │   └── documentStore.ts     # 状态管理
+│   ├── utils/
+│   │   └── highlightLanguages.ts
+│   ├── App.tsx
+│   └── main.tsx
+├── src-tauri/                   # Tauri 后端代码
+├── package.json
+└── README.md
+```
+
+## 🔧 开发环境设置
+
+### 推荐 IDE
+
+- [VS Code](https://code.visualstudio.com/)
+- [Tauri 扩展](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode)
+- [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+
+### 系统要求
+
+- Node.js 18+
+- Rust 1.70+ (用于 Tauri 桌面应用)
+- npm 或 yarn
+
+## 📝 许可证
+
+本项目采用 [GPL-3.0 许可证](LICENSE)。
+
+## 🤝 贡献
+
+欢迎提交 Issue 和 Pull Request！
