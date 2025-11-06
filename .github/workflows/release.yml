@@ -118,9 +118,9 @@ jobs:
           prerelease: false
           args: ${{ matrix.settings.args }}
 
-  # 更新 Release 说明(可选)
-  update-release:
-    name: Update Release Notes
+  # 发布 Release (将草稿转为正式发布并更新说明)
+  publish-release:
+    name: Publish Release
     needs: release
     runs-on: ubuntu-latest
     
@@ -146,56 +146,66 @@ jobs:
             echo "EOF" >> $GITHUB_OUTPUT
           fi
 
-      - name: Update Release
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: ${{ github.ref_name }}
-          draft: false
-          body: |
-            ## 🎉 Tauri Markdown Editor ${{ github.ref_name }}
+      - name: Publish and Update Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # 获取草稿 Release ID
+          RELEASE_ID=$(gh api repos/${{ github.repository }}/releases/tags/${{ github.ref_name }} --jq '.id')
 
-            ### 📦 下载安装包
+          # 生成 Release 说明
+          cat > release_body.md << 'RELEASE_BODY_EOF'
+          ## 🎉 Tauri Markdown Editor ${{ github.ref_name }}
 
-            请根据您的操作系统选择对应的安装包:
+          ### 📦 下载安装包
 
-            - **Windows**: `*-setup.exe` 文件 (NSIS 安装程序,支持中文界面)
-            - **macOS**:
-              - `aarch64.dmg` - Apple Silicon (M1/M2/M3)
-              - `x64.dmg` - Intel 处理器
-            - **Linux**:
-              - `.AppImage` - 通用格式
-              - `.deb` - Debian/Ubuntu
+          请根据您的操作系统选择对应的安装包:
 
-            ### ✨ 更新内容
+          - **Windows**: `*-setup.exe` 文件 (NSIS 安装程序,支持中文界面)
+          - **macOS**:
+            - `aarch64.dmg` - Apple Silicon (M1/M2/M3)
+            - `x64.dmg` - Intel 处理器
+          - **Linux**:
+            - `.AppImage` - 通用格式
+            - `.deb` - Debian/Ubuntu
 
-            ${{ steps.changelog.outputs.changelog }}
+          ### ✨ 更新内容
 
-            ### � 安装说明
+          ${{ steps.changelog.outputs.changelog }}
 
-            #### Windows
-            1. 下载 `*-setup.exe` 文件
-            2. 双击运行安装程序
-            3. 选择安装语言(支持简体中文和英文)
-            4. 按照向导完成安装
+          ### 📝 安装说明
 
-            #### macOS
-            1. 下载对应架构的 `.dmg` 文件
-            2. 打开 DMG 文件
-            3. 将应用拖入 Applications 文件夹
-            4. 首次运行时,右键点击应用选择"打开"(绕过 Gatekeeper)
+          #### Windows
+          1. 下载 `*-setup.exe` 文件
+          2. 双击运行安装程序
+          3. 选择安装语言(支持简体中文和英文)
+          4. 按照向导完成安装
 
-            #### Linux
-            1. 下载 `.AppImage` 文件
-            2. 添加执行权限: `chmod +x tauri-md_*.AppImage`
-            3. 运行: `./tauri-md_*.AppImage`
+          #### macOS
+          1. 下载对应架构的 `.dmg` 文件
+          2. 打开 DMG 文件
+          3. 将应用拖入 Applications 文件夹
+          4. 首次运行时,右键点击应用选择"打开"(绕过 Gatekeeper)
 
-            或使用 `.deb` 包:
-            ```bash
-            sudo dpkg -i tauri-md_*.deb
-            sudo apt-get install -f  # 安装依赖
-            ```
+          #### Linux
+          1. 下载 `.AppImage` 文件
+          2. 添加执行权限: `chmod +x tauri-md_*.AppImage`
+          3. 运行: `./tauri-md_*.AppImage`
 
-            ---
+          或使用 `.deb` 包:
+          ```bash
+          sudo dpkg -i tauri-md_*.deb
+          sudo apt-get install -f  # 安装依赖
+          ```
 
-            **完整更新日志**: https://github.com/${{ github.repository }}/compare/v0.1.0...${{ github.ref_name }}
+          ---
+
+          **完整更新日志**: https://github.com/${{ github.repository }}/compare/v0.1.0...${{ github.ref_name }}
+          RELEASE_BODY_EOF
+
+          # 更新 Release 为正式发布并更新说明
+          gh release edit ${{ github.ref_name }} \
+            --draft=false \
+            --latest \
+            --notes-file release_body.md
 
