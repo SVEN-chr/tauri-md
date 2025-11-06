@@ -8,21 +8,23 @@ test.describe('编辑器交互测试', () => {
     // 等待编辑器加载
     await page.waitForSelector('.ProseMirror', { timeout: 10000 })
 
-    // 清空编辑器内容 - 使用多次全选删除确保清空
+    // 使用 JavaScript 直接清空编辑器内容（更可靠）
+    await page.evaluate(() => {
+      const editor = document.querySelector('.ProseMirror')
+      if (editor) {
+        editor.innerHTML = '<p></p>'
+        // 触发 focus 确保编辑器处于活动状态
+        const event = new Event('input', { bubbles: true })
+        editor.dispatchEvent(event)
+      }
+    })
+
+    // 等待内容清空完成
+    await page.waitForTimeout(500)
+
+    // 点击编辑器确保焦点
     const editor = page.locator('.ProseMirror')
     await editor.click()
-
-    // 多次尝试清空，确保所有内容都被删除
-    for (let i = 0; i < 3; i++) {
-      await page.keyboard.press('Control+A')
-      await page.keyboard.press('Backspace')
-      await page.waitForTimeout(100)
-    }
-
-    // 最后再确认一次
-    await page.keyboard.press('Control+A')
-    await page.keyboard.press('Delete')
-    await page.waitForTimeout(300)
   })
 
   test('应该能够输入文本并验证内容更新', async ({ page }) => {
