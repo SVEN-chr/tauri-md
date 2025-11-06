@@ -98,21 +98,21 @@ jobs:
           releaseName: 'Tauri MD v__VERSION__'
           releaseBody: |
             ## 🎉 Tauri Markdown Editor v__VERSION__
-            
+
             ### 📦 下载安装包
-            
+
             请根据您的操作系统选择对应的安装包:
-            
-            - **Windows**: `.msi` 或 `.exe` 文件
+
+            - **Windows**: `*-setup.exe` 文件 (NSIS 安装程序,支持中文界面)
             - **macOS**: `.dmg` 文件 (支持 Intel 和 Apple Silicon)
             - **Linux**: `.AppImage` 或 `.deb` 文件
-            
+
             ### ✨ 更新内容
-            
+
             请查看下方的完整更新日志。
-            
+
             ---
-            
+
             **完整更新日志**: https://github.com/${{ github.repository }}/compare/v0.1.0...${{ github.ref_name }}
           releaseDraft: true
           prerelease: false
@@ -158,7 +158,7 @@ jobs:
 
             请根据您的操作系统选择对应的安装包:
 
-            - **Windows**: `.msi` 或 `.exe` 文件
+            - **Windows**: `*-setup.exe` 文件 (NSIS 安装程序,支持中文界面)
             - **macOS**:
               - `aarch64.dmg` - Apple Silicon (M1/M2/M3)
               - `x64.dmg` - Intel 处理器
@@ -173,9 +173,10 @@ jobs:
             ### � 安装说明
 
             #### Windows
-            1. 下载 `.msi` 文件
+            1. 下载 `*-setup.exe` 文件
             2. 双击运行安装程序
-            3. 按照向导完成安装
+            3. 选择安装语言(支持简体中文和英文)
+            4. 按照向导完成安装
 
             #### macOS
             1. 下载对应架构的 `.dmg` 文件
