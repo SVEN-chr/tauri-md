@@ -8,13 +8,20 @@ test.describe('编辑器交互测试', () => {
     // 等待编辑器加载
     await page.waitForSelector('.ProseMirror', { timeout: 10000 })
 
-    // 清空编辑器内容 - 全选并删除
+    // 清空编辑器内容 - 使用多次全选删除确保清空
     const editor = page.locator('.ProseMirror')
     await editor.click()
+
+    // 多次尝试清空，确保所有内容都被删除
+    for (let i = 0; i < 3; i++) {
+      await page.keyboard.press('Control+A')
+      await page.keyboard.press('Backspace')
+      await page.waitForTimeout(100)
+    }
+
+    // 最后再确认一次
     await page.keyboard.press('Control+A')
     await page.keyboard.press('Delete')
-
-    // 等待内容清空
     await page.waitForTimeout(300)
   })
 

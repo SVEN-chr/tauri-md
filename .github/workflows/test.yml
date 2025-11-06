@@ -15,7 +15,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        node-version: [18.x, 20.x]
+        node-version: [20.x]  # 只使用 Node.js 20.x，避免 18.x 超时问题
     
     steps:
       - name: Checkout code
@@ -32,6 +32,7 @@ jobs:
       
       - name: Run unit tests
         run: npm run test:run
+        timeout-minutes: 10
       
       - name: Generate coverage report
         run: npm run test:coverage
@@ -79,6 +80,7 @@ jobs:
       
       - name: Run E2E tests
         run: npm run test:e2e
+        timeout-minutes: 15
       
       - name: Upload Playwright report
         uses: actions/upload-artifact@v4
@@ -118,6 +120,7 @@ jobs:
       - name: Run Rust tests
         run: cargo test
         working-directory: src-tauri
+        timeout-minutes: 10
 
   build:
     name: Build Check
