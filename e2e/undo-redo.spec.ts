@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test'
+import { undo, redo, selectAll } from './helpers/keyboard'
 
 test.describe('撤销/重做功能测试', () => {
   test.beforeEach(async ({ page }) => {
@@ -31,66 +32,66 @@ test.describe('撤销/重做功能测试', () => {
 
   test('应该能够撤销文本输入', async ({ page }) => {
     const editor = page.locator('.ProseMirror')
-    
+
     // 输入文本
     await editor.click()
-    await editor.type('测试文本')
-    
+    await editor.pressSequentially('测试文本')
+
     // 验证文本已输入
     await expect(editor).toContainText('测试文本')
-    
+
     // 点击撤销按钮
     await page.click('button[title="撤销 (Ctrl+Z)"]')
-    
+
     // 验证文本已撤销
     await expect(editor).not.toContainText('测试文本')
   })
 
   test('应该能够使用快捷键撤销', async ({ page }) => {
     const editor = page.locator('.ProseMirror')
-    
+
     // 输入文本
     await editor.click()
-    await editor.type('快捷键测试')
-    
-    // 使用 Ctrl+Z 撤销
-    await page.keyboard.press('Control+Z')
-    
+    await editor.pressSequentially('快捷键测试')
+
+    // 使用快捷键撤销
+    await undo(page)
+
     // 验证文本已撤销
     await expect(editor).not.toContainText('快捷键测试')
   })
 
   test('应该能够重做已撤销的操作', async ({ page }) => {
     const editor = page.locator('.ProseMirror')
-    
+
     // 输入文本
     await editor.click()
-    await editor.type('重做测试')
-    
+    await editor.pressSequentially('重做测试')
+
     // 撤销
     await page.click('button[title="撤销 (Ctrl+Z)"]')
     await expect(editor).not.toContainText('重做测试')
-    
+
     // 重做
     await page.click('button[title="重做 (Ctrl+Y)"]')
-    
+
     // 验证文本已恢复
     await expect(editor).toContainText('重做测试')
   })
 
   test('应该能够使用快捷键重做', async ({ page }) => {
     const editor = page.locator('.ProseMirror')
-    
+
     // 输入文本
     await editor.click()
-    await editor.type('快捷键重做')
-    
+    await editor.pressSequentially('快捷键重做')
+
     // 撤销
-    await page.keyboard.press('Control+Z')
-    
-    // 使用 Ctrl+Y 重做
-    await page.keyboard.press('Control+Y')
-    
+    await undo(page)
+
+    // 重做
+    await redo(page)
+
     // 验证文本已恢复
     await expect(editor).toContainText('快捷键重做')
   })
@@ -100,10 +101,10 @@ test.describe('撤销/重做功能测试', () => {
 
     // 输入文本
     await editor.click()
-    await editor.type('格式化文本')
+    await editor.pressSequentially('格式化文本')
 
     // 全选并加粗
-    await page.keyboard.press('Control+A')
+    await selectAll(page)
     await page.click('button[title="加粗 (Ctrl+B)"]')
 
     // 等待格式应用
@@ -128,11 +129,11 @@ test.describe('撤销/重做功能测试', () => {
     await editor.click()
 
     // 输入多段文本
-    await editor.type('第一段')
+    await editor.pressSequentially('第一段')
     await page.keyboard.press('Enter')
-    await editor.type('第二段')
+    await editor.pressSequentially('第二段')
     await page.keyboard.press('Enter')
-    await editor.type('第三段')
+    await editor.pressSequentially('第三段')
 
     // 等待输入完成
     await page.waitForTimeout(300)
@@ -143,11 +144,11 @@ test.describe('撤销/重做功能测试', () => {
     await expect(editor).toContainText('第三段')
 
     // 撤销三次 - 使用快捷键更可靠
-    await page.keyboard.press('Control+Z')
+    await undo(page)
     await page.waitForTimeout(200)
-    await page.keyboard.press('Control+Z')
+    await undo(page)
     await page.waitForTimeout(200)
-    await page.keyboard.press('Control+Z')
+    await undo(page)
     await page.waitForTimeout(200)
 
     // 验证所有文本都已撤销
@@ -162,23 +163,23 @@ test.describe('撤销/重做功能测试', () => {
     await editor.click()
 
     // 输入文本
-    await editor.type('文本A')
+    await editor.pressSequentially('文本A')
     await page.keyboard.press('Enter')
-    await editor.type('文本B')
+    await editor.pressSequentially('文本B')
 
     // 等待输入完成
     await page.waitForTimeout(300)
 
     // 撤销两次
-    await page.keyboard.press('Control+Z')
+    await undo(page)
     await page.waitForTimeout(200)
-    await page.keyboard.press('Control+Z')
+    await undo(page)
     await page.waitForTimeout(200)
 
-    // 重做两次 - 使用快捷键
-    await page.keyboard.press('Control+Y')
+    // 重做两次
+    await redo(page)
     await page.waitForTimeout(200)
-    await page.keyboard.press('Control+Y')
+    await redo(page)
     await page.waitForTimeout(200)
 
     // 验证文本已恢复
@@ -190,10 +191,12 @@ test.describe('撤销/重做功能测试', () => {
     const editor = page.locator('.ProseMirror')
     const undoButton = page.locator('button[title="撤销 (Ctrl+Z)"]')
 
-    // 撤销所有操作（包括删除操作）
-    while (await undoButton.isEnabled()) {
-      await page.keyboard.press('Control+Z')
+    // 撤销所有操作（包括删除操作）- 限制最多尝试 20 次避免无限循环
+    let attempts = 0
+    while (await undoButton.isEnabled() && attempts < 20) {
+      await undo(page)
       await page.waitForTimeout(200)
+      attempts++
     }
 
     // 验证撤销按钮禁用

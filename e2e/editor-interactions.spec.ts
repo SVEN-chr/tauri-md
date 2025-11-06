@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test'
+import { selectAll } from './helpers/keyboard'
 
 test.describe('编辑器交互测试', () => {
   test.beforeEach(async ({ page }) => {
@@ -33,10 +34,10 @@ test.describe('编辑器交互测试', () => {
     // 点击编辑器
     const editor = page.locator('.ProseMirror')
     await editor.click()
-    
+
     // 输入文本
-    await editor.type('这是测试文本')
-    
+    await editor.pressSequentially('这是测试文本')
+
     // 验证文本已输入
     await expect(editor).toContainText('这是测试文本')
   })
@@ -46,10 +47,10 @@ test.describe('编辑器交互测试', () => {
     await editor.click()
 
     // 输入文本
-    await editor.type('粗体文本')
+    await editor.pressSequentially('粗体文本')
 
     // 全选文本
-    await page.keyboard.press('Control+A')
+    await selectAll(page)
 
     // 点击加粗按钮
     await page.click('button[title="加粗 (Ctrl+B)"]')
@@ -63,10 +64,10 @@ test.describe('编辑器交互测试', () => {
     await editor.click()
 
     // 输入文本
-    await editor.type('斜体文本')
+    await editor.pressSequentially('斜体文本')
 
     // 全选文本
-    await page.keyboard.press('Control+A')
+    await selectAll(page)
 
     // 点击斜体按钮
     await page.click('button[title="斜体 (Ctrl+I)"]')
@@ -82,8 +83,9 @@ test.describe('编辑器交互测试', () => {
     // 点击 H1 按钮
     await page.click('button[title="一级标题"]')
 
-    // 输入标题文本
-    await editor.type('我的标题')
+    // 重新聚焦编辑器并输入标题文本
+    await editor.click()
+    await editor.pressSequentially('我的标题')
 
     // 验证 H1 标签已创建
     await expect(editor.locator('h1').first()).toContainText('我的标题')
@@ -96,8 +98,9 @@ test.describe('编辑器交互测试', () => {
     // 点击 H2 按钮
     await page.click('button[title="二级标题"]')
 
-    // 输入标题文本
-    await editor.type('二级标题')
+    // 重新聚焦编辑器并输入标题文本
+    await editor.click()
+    await editor.pressSequentially('二级标题')
 
     // 验证 H2 标签已创建
     await expect(editor.locator('h2').first()).toContainText('二级标题')
@@ -106,13 +109,14 @@ test.describe('编辑器交互测试', () => {
   test('应该能够插入三级标题', async ({ page }) => {
     const editor = page.locator('.ProseMirror')
     await editor.click()
-    
+
     // 点击 H3 按钮
     await page.click('button[title="三级标题"]')
-    
-    // 输入标题文本
-    await editor.type('三级标题')
-    
+
+    // 重新聚焦编辑器并输入标题文本
+    await editor.click()
+    await editor.pressSequentially('三级标题')
+
     // 验证 H3 标签已创建
     await expect(editor.locator('h3')).toContainText('三级标题')
   })
@@ -121,11 +125,12 @@ test.describe('编辑器交互测试', () => {
     const editor = page.locator('.ProseMirror')
     await editor.click()
 
-    // 点击无序列表按钮
+    // 点击无序列表按钮(按钮会自动聚焦编辑器)
     await page.click('button[title="无序列表"]')
 
-    // 输入列表项
-    await editor.type('列表项 1')
+    // 等待一下让列表创建完成,然后输入列表项
+    await page.waitForTimeout(100)
+    await editor.pressSequentially('列表项 1')
 
     // 验证无序列表已创建 - 查找包含特定文本的列表项
     await expect(editor.locator('ul li').filter({ hasText: '列表项 1' })).toBeVisible()
@@ -135,11 +140,12 @@ test.describe('编辑器交互测试', () => {
     const editor = page.locator('.ProseMirror')
     await editor.click()
 
-    // 点击有序列表按钮
+    // 点击有序列表按钮(按钮会自动聚焦编辑器)
     await page.click('button[title="有序列表"]')
 
-    // 输入列表项
-    await editor.type('第一项')
+    // 等待一下让列表创建完成,然后输入列表项
+    await page.waitForTimeout(100)
+    await editor.pressSequentially('第一项')
 
     // 验证有序列表已创建
     await expect(editor.locator('ol li').filter({ hasText: '第一项' })).toBeVisible()
@@ -149,11 +155,12 @@ test.describe('编辑器交互测试', () => {
     const editor = page.locator('.ProseMirror')
     await editor.click()
 
-    // 点击任务列表按钮
+    // 点击任务列表按钮(按钮会自动聚焦编辑器)
     await page.click('button[title="任务列表"]')
 
-    // 输入任务项
-    await editor.type('任务项')
+    // 等待一下让列表创建完成,然后输入任务项
+    await page.waitForTimeout(100)
+    await editor.pressSequentially('任务项')
 
     // 验证任务列表已创建（包含复选框） - 查找包含特定文本的任务列表
     await expect(editor.locator('ul[data-type="taskList"]').filter({ hasText: '任务项' })).toBeVisible()
@@ -166,8 +173,9 @@ test.describe('编辑器交互测试', () => {
     // 点击代码块按钮
     await page.click('button[title="代码块"]')
 
-    // 输入代码
-    await editor.type('const x = 1;')
+    // 重新聚焦编辑器并输入代码
+    await editor.click()
+    await editor.pressSequentially('const x = 1;')
 
     // 验证代码块已创建 - 查找包含特定文本的代码块
     await expect(editor.locator('pre code').filter({ hasText: 'const x = 1;' })).toBeVisible()
@@ -184,7 +192,7 @@ test.describe('编辑器交互测试', () => {
     await page.waitForTimeout(300)
 
     // 输入引用文本
-    await editor.type('这是引用内容')
+    await editor.pressSequentially('这是引用内容')
 
     // 验证引用块已创建
     await expect(editor.locator('blockquote')).toContainText('这是引用内容')
