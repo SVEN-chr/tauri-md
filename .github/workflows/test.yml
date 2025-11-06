@@ -10,8 +10,9 @@ jobs:
   unit-tests:
     name: Unit Tests
     runs-on: ${{ matrix.os }}
-    
+
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
         node-version: [18.x, 20.x]
@@ -50,8 +51,9 @@ jobs:
   e2e-tests:
     name: E2E Tests
     runs-on: ${{ matrix.os }}
-    
+
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
     
@@ -69,7 +71,11 @@ jobs:
         run: npm ci
       
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install chromium
+
+      - name: Install Playwright system dependencies (Linux)
+        run: npx playwright install-deps chromium
+        if: runner.os == 'Linux'
       
       - name: Run E2E tests
         run: npm run test:e2e
@@ -85,8 +91,9 @@ jobs:
   rust-tests:
     name: Rust Tests
     runs-on: ${{ matrix.os }}
-    
+
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
     
@@ -95,13 +102,10 @@ jobs:
         uses: actions/checkout@v4
       
       - name: Setup Rust
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-          override: true
-      
+        uses: dtolnay/rust-toolchain@stable
+
       - name: Cache Rust dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.cargo/bin/
