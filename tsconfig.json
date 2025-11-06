@@ -21,5 +21,16 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": ["src"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "src-tauri",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.spec.ts",
+    "**/*.spec.tsx",
+    "src/test",
+    "e2e"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
